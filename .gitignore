@@ -1,13 +1,15 @@
-.artifacts/
 # SCREW0721 git ignore rules
 #
-# This repository should contain source code, documentation, configuration
-# templates, and small test utilities. It should NOT upload robot experiment
-# records, LeRobot datasets, camera captures, trained model artifacts, build
-# outputs, caches, or local editor/Codex state.
+# Goal:
+#   Keep source code, documentation, configuration files, third-party source,
+#   and required reproduction assets such as YOLO model weights.
+#
+#   Ignore only files that are unnecessary for reproducing the project:
+#   robot run records, LeRobot datasets, camera capture dumps, logs, build
+#   products, caches, local IDE state, and temporary files.
 
 # ---------------------------------------------------------------------------
-# Local agent / editor state
+# Local editor / Codex state
 # ---------------------------------------------------------------------------
 .agents/
 .codex/
@@ -43,7 +45,6 @@ ENV/
 conda-meta/
 
 # Python packaging/build products
-build/
 dist/
 *.egg-info/
 .eggs/
@@ -52,6 +53,15 @@ pip-wheel-metadata/
 # ---------------------------------------------------------------------------
 # C/C++ / CMake build products
 # ---------------------------------------------------------------------------
+# These are reproducible from CMake and source code, so they should not be
+# uploaded. This also covers apps/screw_driver/build and OpenArm CAN builds.
+build/
+build-*/
+cmake-build-*/
+**/build/
+**/build-*/
+**/cmake-build-*/
+**/CMakeFiles/
 CMakeFiles/
 CMakeCache.txt
 cmake_install.cmake
@@ -60,13 +70,6 @@ Testing/
 Makefile
 compile_commands.json
 
-# Common build directories anywhere in the project.
-**/build/
-**/build-*/
-**/cmake-build-*/
-**/CMakeFiles/
-
-# Native binaries and libraries.
 *.o
 *.obj
 *.a
@@ -78,18 +81,24 @@ compile_commands.json
 *.out
 
 # ---------------------------------------------------------------------------
-# Robot experiment artifacts: do not upload collected data
+# Robot experiment outputs
 # ---------------------------------------------------------------------------
-# The whole artifacts tree is for generated datasets, logs, camera outputs,
-# model weights, benchmark outputs, and other experiment products.
-artifacts/
+# Do not ignore the whole artifacts/ tree: artifacts/models/ contains YOLO
+# weights needed by the vision pipeline. Ignore only generated subfolders.
+artifacts/datasets/
+artifacts/logs/
+artifacts/camera_test_data/
+artifacts/runs/
+artifacts/results/
+artifacts/outputs/
+artifacts/records/
+artifacts/recordings/
 
-# If a future empty directory placeholder is needed, this allows only .gitkeep
-# files directly under artifacts subfolders to be tracked.
-!artifacts/.gitkeep
-!artifacts/**/.gitkeep
+# Keep required reproduction model assets.
+!artifacts/models/
+!artifacts/models/**
 
-# Historical/default output names used by LeRobot and the screw project.
+# Other common generated output folders, wherever a script may create them.
 output/
 outputs/
 runs/
@@ -100,9 +109,6 @@ datasets/
 dataset/
 logs/
 log/
-models/
-checkpoints/
-weights/
 wandb/
 mlruns/
 tensorboard/
@@ -117,53 +123,25 @@ tensorboard/
 **/dataset/
 **/logs/
 **/log/
-**/models/
-**/checkpoints/
-**/weights/
 
-# LeRobot / robot recording data files.
-*.parquet
-*.jsonl
-*.hdf5
-*.h5
-*.npy
-*.npz
-*.pkl
-*.pickle
-*.pt
-*.pth
-*.ckpt
-*.safetensors
-*.onnx
+# LeRobot dataset files and raw recording streams. These are ignored only when
+# they appear inside generated data/output folders by the directory rules above.
+# Model files such as .pt/.onnx/.engine are intentionally NOT ignored globally.
 
-# Camera, video, point cloud, and calibration experiment outputs.
-*.png
-*.jpg
-*.jpeg
-*.bmp
-*.tif
-*.tiff
-*.mp4
-*.avi
-*.mov
-*.mkv
-*.bag
-*.mcap
-*.ply
-*.pcd
+# ---------------------------------------------------------------------------
+# Temporary data files commonly produced during experiments
+# ---------------------------------------------------------------------------
+# Keep this section narrow. Do not globally ignore .json/.yaml/.pt/.onnx/.png
+# because those can be required project assets.
+*.tmp
+*.temp
+*.bak
+*.orig
 
-# Force logs, timing logs, and ad-hoc experiment tables.
-*.csv
-*.tsv
-
-# Keep source-side documentation images possible by explicitly allowing common
-# documentation asset folders if you add small figures later.
-!docs/**/*.png
-!docs/**/*.jpg
-!docs/**/*.jpeg
-!README.assets/**/*.png
-!README.assets/**/*.jpg
-!README.assets/**/*.jpeg
+tmp/
+temp/
+.tmp/
+.temp/
 
 # ---------------------------------------------------------------------------
 # Local machine configuration / secrets
@@ -173,24 +151,3 @@ tensorboard/
 *.local
 *.secret
 secrets/
-
-# Robot and camera calibration files can contain lab-specific coordinates.
-# Track template/example files instead, not real calibration dumps.
-*calibration*.json
-*calibration*.yaml
-*calibration*.yml
-!*calibration*.example.json
-!*calibration*.example.yaml
-!*calibration*.example.yml
-
-# ---------------------------------------------------------------------------
-# Temporary files
-# ---------------------------------------------------------------------------
-tmp/
-temp/
-.tmp/
-.temp/
-*.tmp
-*.temp
-*.bak
-*.orig
