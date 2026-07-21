@@ -1,0 +1,196 @@
+.artifacts/
+# SCREW0721 git ignore rules
+#
+# This repository should contain source code, documentation, configuration
+# templates, and small test utilities. It should NOT upload robot experiment
+# records, LeRobot datasets, camera captures, trained model artifacts, build
+# outputs, caches, or local editor/Codex state.
+
+# ---------------------------------------------------------------------------
+# Local agent / editor state
+# ---------------------------------------------------------------------------
+.agents/
+.codex/
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ---------------------------------------------------------------------------
+# OS files
+# ---------------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---------------------------------------------------------------------------
+# Python caches and local environments
+# ---------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+.venv/
+venv/
+env/
+ENV/
+conda-meta/
+
+# Python packaging/build products
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# ---------------------------------------------------------------------------
+# C/C++ / CMake build products
+# ---------------------------------------------------------------------------
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+CTestTestfile.cmake
+Testing/
+Makefile
+compile_commands.json
+
+# Common build directories anywhere in the project.
+**/build/
+**/build-*/
+**/cmake-build-*/
+**/CMakeFiles/
+
+# Native binaries and libraries.
+*.o
+*.obj
+*.a
+*.so
+*.so.*
+*.dll
+*.dylib
+*.exe
+*.out
+
+# ---------------------------------------------------------------------------
+# Robot experiment artifacts: do not upload collected data
+# ---------------------------------------------------------------------------
+# The whole artifacts tree is for generated datasets, logs, camera outputs,
+# model weights, benchmark outputs, and other experiment products.
+artifacts/
+
+# If a future empty directory placeholder is needed, this allows only .gitkeep
+# files directly under artifacts subfolders to be tracked.
+!artifacts/.gitkeep
+!artifacts/**/.gitkeep
+
+# Historical/default output names used by LeRobot and the screw project.
+output/
+outputs/
+runs/
+results/
+records/
+recordings/
+datasets/
+dataset/
+logs/
+log/
+models/
+checkpoints/
+weights/
+wandb/
+mlruns/
+tensorboard/
+
+**/output/
+**/outputs/
+**/runs/
+**/results/
+**/records/
+**/recordings/
+**/datasets/
+**/dataset/
+**/logs/
+**/log/
+**/models/
+**/checkpoints/
+**/weights/
+
+# LeRobot / robot recording data files.
+*.parquet
+*.jsonl
+*.hdf5
+*.h5
+*.npy
+*.npz
+*.pkl
+*.pickle
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.onnx
+
+# Camera, video, point cloud, and calibration experiment outputs.
+*.png
+*.jpg
+*.jpeg
+*.bmp
+*.tif
+*.tiff
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.bag
+*.mcap
+*.ply
+*.pcd
+
+# Force logs, timing logs, and ad-hoc experiment tables.
+*.csv
+*.tsv
+
+# Keep source-side documentation images possible by explicitly allowing common
+# documentation asset folders if you add small figures later.
+!docs/**/*.png
+!docs/**/*.jpg
+!docs/**/*.jpeg
+!README.assets/**/*.png
+!README.assets/**/*.jpg
+!README.assets/**/*.jpeg
+
+# ---------------------------------------------------------------------------
+# Local machine configuration / secrets
+# ---------------------------------------------------------------------------
+.env
+.env.*
+*.local
+*.secret
+secrets/
+
+# Robot and camera calibration files can contain lab-specific coordinates.
+# Track template/example files instead, not real calibration dumps.
+*calibration*.json
+*calibration*.yaml
+*calibration*.yml
+!*calibration*.example.json
+!*calibration*.example.yaml
+!*calibration*.example.yml
+
+# ---------------------------------------------------------------------------
+# Temporary files
+# ---------------------------------------------------------------------------
+tmp/
+temp/
+.tmp/
+.temp/
+*.tmp
+*.temp
+*.bak
+*.orig
